@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import './App.css'
 import Membre from './components/Membre';
-import Button from './components/Button';
+
 
 const league = {
    membre1: {
@@ -46,11 +46,25 @@ class App extends Component {
     console.log('démontage')
    }
    
-  handleClick = (nb) =>{
+  handleClick = (id,nb) =>{
     const league = {...this.state.league}
-    league.membre1.age +=nb
+    league[id].age +=nb
     this.setState({league})
   } 
+
+  handleChange = (event, id) => {
+    const league = {...this.state.league}
+    const nom = event.target.value
+    league[id].nom = nom
+    this.setState({league:league})
+  }
+
+  hideName = (id) => {
+    const league = {...this.state.league}
+    league[id].nom = "X"
+    league[id].age = 0
+    this.setState({league:league})
+  }
 
   handleShow = () => {
     const isShow = !this.state.isShow 
@@ -60,7 +74,15 @@ class App extends Component {
   render() {
     const list = Object.keys(this.state.league).map(iteration => {
       return (
-        <Membre key={iteration} age={this.state.league[iteration].age} nom={this.state.league[iteration].nom} />
+        <Membre 
+          key={iteration}
+          handleChange={(event) => this.handleChange(event, iteration)}
+          hideName={()=> this.hideName(iteration)}
+          plus={this.state.plus}
+          handleClick={() => this.handleClick(iteration, this.state.plus)} 
+          age={this.state.league[iteration].age} 
+          nom={this.state.league[iteration].nom} 
+        />
       )
     })
     
@@ -85,10 +107,10 @@ class App extends Component {
    
         
 
-        <Button 
+        {/* <Button 
           plus={this.state.plus}
           veillir={() => this.handleClick(this.state.plus)}
-        />
+        /> */}
         
       </>
     )
