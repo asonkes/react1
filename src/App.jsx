@@ -1,5 +1,4 @@
-
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import './App.css'
 import Membre from './components/Membre';
 import Button from './components/Button';
@@ -20,13 +19,17 @@ const league = {
    membre4: {
     nom: 'Catwoman',
     age: 33
+   },
+   membre5: {
+    nom: "Robin",
+    age: 25
    }
 }
 
 class App extends Component {
   state = { 
     league: league,
-    plus: 2,
+    plus: 2, 
     isShow: false
    }
 
@@ -34,14 +37,15 @@ class App extends Component {
     console.log('montage')
    }
 
-   componentDidUpadate() {
+   componentDidUpdate() {
     console.log('je recharge mon composant')
    }
 
-   componentWillUnmount() {
+   componentWillUnmount()
+   {
     console.log('démontage')
    }
-
+   
   handleClick = (nb) =>{
     const league = {...this.state.league}
     league.membre1.age +=nb
@@ -49,44 +53,47 @@ class App extends Component {
   } 
 
   handleShow = () => {
-    const isShow = !this.state.isShow
+    const isShow = !this.state.isShow 
     this.setState({isShow})
   }
 
-  render() { 
-    // Il va me faire un tableau
+  render() {
     const list = Object.keys(this.state.league).map(iteration => {
-
       return (
-        // Il va aller voir dans league, s'il y a qqchose qui s'appelle "iteration".
-        // On met "key", au singulier car au-dessus au pluriel mais en-dessous, il veut que chaque objet est unique, donc c'est comme s'il avait un index, donc on met au singulier, au sinon, conflit avec celui du desssus. 
-        <Membre key={iteration} age={this.state.league[iteration].age} nom={this.state.league[iteration].nom}/>
+        <Membre key={iteration} age={this.state.league[iteration].age} nom={this.state.league[iteration].nom} />
       )
     })
+    
 
     return (
       <>
         <h1>Hello World!</h1>
         {list}
         <Membre
-        age="50"
-        nom="Jordan"
+          age="50"
+          nom="Jordan"
         >
+          {
+            this.state.isShow ? <strong>Je suis le GOAT</strong> :  null
+          }
           
-          <strong>Je suis le goat</strong>
-
-          <button>
+          <button onClick={this.handleShow}>
             {this.state.isShow ? 'Cacher' : 'Montrer'}
           </button>
+
         </Membre>
+   
+        
 
         <Button 
           plus={this.state.plus}
           veillir={() => this.handleClick(this.state.plus)}
         />
+        
       </>
     )
+   // return React.createElement('div',{className: 'app'}, React.createElement('h1',null,'Hello World'))
   }
 }
-
+ 
 export default App;
