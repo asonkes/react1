@@ -26,7 +26,8 @@ const league = {
 class App extends Component {
   state = { 
     league: league,
-    plus: 2
+    plus: 2,
+    isShow: false
    }
 
    componentDidMount() {
@@ -47,6 +48,11 @@ class App extends Component {
     this.setState({league})
   } 
 
+  handleShow = () => {
+    const isShow = !this.state.isShow
+    this.setState({isShow})
+  }
+
   render() { 
     // Il va me faire un tableau
     const list = Object.keys(this.state.league).map(iteration => {
@@ -62,6 +68,17 @@ class App extends Component {
       <>
         <h1>Hello World!</h1>
         {list}
+        <Membre
+        age="50"
+        nom="Jordan"
+        >
+          
+          <strong>Je suis le goat</strong>
+
+          <button>
+            {this.state.isShow ? 'Cacher' : 'Montrer'}
+          </button>
+        </Membre>
 
         <Button 
           plus={this.state.plus}
